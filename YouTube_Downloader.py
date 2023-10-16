@@ -11,10 +11,10 @@ option = {
         'format': 'bestvideo+bestaudio/best ,video.mp4'
     }
 
-# YouTubeのURLを入力
+# YouTubeの動画のURLを入力
 URL = input("Enter URL : ")
 
-# yt-dlpでメタデータを取得(タイトル取得のため)
+# yt-dlpで動画のメタデータを取得(動画のタイトル取得のため)
 with YoutubeDL() as ydl:
     res = ydl.extract_info(URL, download=False)
 
@@ -29,7 +29,7 @@ output_title = res["title"] + ".mp4"
 input_path = os.path.join(Path, input_title)
 output_path = os.path.join(Path, output_title)
 
-# ffmpegを使用して変換
+# ffmpegを使用してWebmからmp4へ変換
 input_file = ffmpeg.input(input_path)
 output_file = ffmpeg.output(input_file, output_path)
 
