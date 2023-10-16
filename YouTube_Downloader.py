@@ -4,7 +4,7 @@ import os
 
 # yt-dlpのオプションを設定
 option = {
-        'outtmpl': "/Users/ryo/Downloads/YouTube/%(title)s",
+        'outtmpl': "/Users/UserName/Downloads/YouTube/%(title)s",
         'format': 'bestvideo+bestaudio/best ,video.mp4'
     }
 
@@ -23,8 +23,8 @@ input_title = res["title"] + ".webm"
 output_title = res["title"] + ".mp4"
 
 # 入出力パスを指定
-input_path = os.path.join("/Users/ryo/Downloads/YouTube", input_title)
-output_path = os.path.join("/Users/ryo/Downloads/YouTube", output_title)
+input_path = os.path.join("/Users/UserName/Downloads/YouTube", input_title)
+output_path = os.path.join("/Users/UserName/Downloads/YouTube", output_title)
 
 # ffmpegを使用して変換
 input_file = ffmpeg.input(input_path)
