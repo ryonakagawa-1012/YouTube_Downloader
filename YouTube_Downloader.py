@@ -3,7 +3,7 @@ import ffmpeg
 import os
 
 # 出力先を指定
-Path = "/Users/ryo/Downloads/YouTube"
+Path = "/Users/UserName/Downloads/YouTube"
 
 # yt-dlpのオプションを設定
 option = {
