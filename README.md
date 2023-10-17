@@ -20,3 +20,6 @@ URLを入れるだけでYouTubeの動画を**最高画質**、**最高音質**�
 ## 見つけたバグ
 * 動画タイトルの中に`/`などの特殊文字が含まれていると処理内容9の名前変更時にエラーが出る。  
   ~~タイトルに特殊文字を使うな！！！~~
+## 参考にしたサイト
+* [pythonでYouTubeをダウンロードするyt-dlpのコピペコード14本まとめ](https://diy-programming.site/youtube/download/)
+* [Pythonでffmpegを使って動画をmp3に変換する方法](https://mekatana.com/python-ffmpeg/)
