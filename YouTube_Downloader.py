@@ -3,11 +3,11 @@ import ffmpeg
 import os
 
 # 出力先を指定
-Path = "/Users/UserName/Downloads/YouTube"
+Path = "/Users/ryo/Downloads/YouTube"
 
 # yt-dlpのオプションを設定
 option = {
-        'outtmpl': Path + "/%(title)s",
+        'outtmpl': Path + "/tmpvideo",
         'format': 'bestvideo+bestaudio/best ,video.mp4'
     }
 
@@ -21,15 +21,11 @@ with YoutubeDL() as ydl:
 # 動画のダウンロード
 YoutubeDL(option).download([URL])
 
-# 入出力ファイルの名前を作成
-input_title = res["title"] + ".webm"
-output_title = res["title"] + ".mp4"
-
 # 入出力パスを指定
-input_path = os.path.join(Path, input_title)
-output_path = os.path.join(Path, output_title)
+input_path = os.path.join(Path, "tmpvideo.webm")
+output_path = os.path.join(Path, "convertedvideo.mp4")
 
-# ffmpegを使用してWebmからmp4へ変換
+# ffmpegを使用してwebmからmp4へ変換
 input_file = ffmpeg.input(input_path)
 output_file = ffmpeg.output(input_file, output_path)
 
@@ -37,5 +33,7 @@ ffmpeg.run(output_file, overwrite_output=True)
 
 # 入力ファイルを削除
 os.remove(input_path)
+
+os.rename(Path + "/convertedvideo.mp4", Path + "/" + res["title"] + ".mp4")
 
 print("Video Download and conversion completed")
