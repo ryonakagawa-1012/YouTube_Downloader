@@ -1,6 +1,7 @@
 from yt_dlp import YoutubeDL
 import ffmpeg
 import os
+import re
 
 # 出力先を指定
 Path = "/Users/UserName/Downloads/YouTube"
@@ -34,6 +35,8 @@ ffmpeg.run(output_file, overwrite_output=True)
 # 入力ファイルを削除
 os.remove(input_path)
 
-os.rename(Path + "/convertedvideo.mp4", Path + "/" + res["title"] + ".mp4")
+# 動画ファイルの名前を変更
+os.rename(Path + "/convertedvideo.mp4", Path + "/" + re.sub(r'[/|]', '-', res["title"]) + ".mp4")
+# Windowsの場合、re.sub（）のパターンを'[\\|/|:|?|.|"|<|>|\|]'に変更したら正常に動作する
 
 print("Video Download and conversion completed")
