@@ -6,16 +6,41 @@ import re
 # 出力先を指定
 Path = "/Users/UserName/Downloads/YouTube"
 
-# url変数,Input変数の宣言
+# url変数,Inputed_url変数の宣言
 url = []
-Input = ""
+Inputed_url = []
 
 # YouTubeの動画のURLを入力
 while True:
     Input = input("Enter URL or Enter 0 to run : ")
     if Input == "0":
         break
-    url.append(Input)
+    Inputed_url.append(Input)
+
+# プレイリストのURLならプレイリストの中の動画のURLを取得
+for i in range(len(Inputed_url)):
+    if "playlist" in Inputed_url[i]:
+        # プレイリストのURLを指定
+        playlist_url = Inputed_url[i]
+
+        # yt-dlpの設定を指定
+        ydl_opts = {
+            'quiet': True,  # 冗長な出力を非表示にする
+        }
+
+        # yt-dlpインスタンスを作成
+        ydl = YoutubeDL(ydl_opts)
+
+        # プレイリスト内の動画のURLを取得
+        with ydl:
+            result = ydl.extract_info(playlist_url, download=False)
+            if 'entries' in result:
+                playlist_videos = result['entries']
+                for video in playlist_videos:
+                    url.append(video['webpage_url'])
+
+    else:
+        url.append(Inputed_url[i])
 
 for URL in url:
     # yt-dlpで動画のメタデータを取得(動画のタイトル取得のため)
@@ -28,7 +53,7 @@ for URL in url:
         'format': 'bestvideo+bestaudio/best'
     }
 
-    onlymp3_option = {
+    only_mp3_option = {
         'outtmpl': Path + '/%(title)s',
         'format': 'bestaudio/best',
         'postprocessors': [{
@@ -40,7 +65,7 @@ for URL in url:
 
     # 動画のダウンロード
     if ".mp3" in URL:
-        YoutubeDL(onlymp3_option).download([URL.replace(".mp3", "")])
+        YoutubeDL(only_mp3_option).download([URL.replace(".mp3", "")])
         print("Audio download completed")
         continue
     else:
@@ -63,4 +88,4 @@ for URL in url:
     os.rename(Path + "/convertedvideo.mp4", Path + "/" + re.sub(r'[/|]', '-', res["title"]) + ".mp4")
     # Windowsの場合、re.sub（）のパターンを'[\\|/|:|?|.|"|<|>|\|]'に変更したら正常に動作する
 
-    print("Video Download and conversion completed")
+    print("*" + res["title"] + " Download and conversion completed")
