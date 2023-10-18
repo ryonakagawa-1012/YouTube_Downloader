@@ -6,12 +6,6 @@ import re
 # 出力先を指定
 Path = "/Users/UserName/Downloads/YouTube"
 
-# yt-dlpのオプションを設定
-option = {
-        'outtmpl': Path + "/tmpvideo",
-        'format': 'bestvideo+bestaudio/best ,video.mp4'
-    }
-
 # url変数,Input変数の宣言
 url = []
 Input = ""
@@ -19,18 +13,38 @@ Input = ""
 # YouTubeの動画のURLを入力
 while True:
     Input = input("Enter URL or Enter 0 to run : ")
-    if Input != "0":
+    if Input == "0":
         break
     url.append(Input)
-
 
 for URL in url:
     # yt-dlpで動画のメタデータを取得(動画のタイトル取得のため)
     with YoutubeDL() as ydl:
-        res = ydl.extract_info(URL, download=False)
+        res = ydl.extract_info(URL.replace(".mp3", ""), download=False)
+
+    # yt-dlpのオプションを設定
+    option = {
+        'outtmpl': Path + "/tmpvideo",
+        'format': 'bestvideo+bestaudio/best'
+    }
+
+    onlymp3_option = {
+        'outtmpl': Path + '/%(title)s',
+        'format': 'bestaudio/best',
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',  # 変換したい形式を指定
+            'preferredquality': '192'  # ビットレートを指定
+        }]
+    }
 
     # 動画のダウンロード
-    YoutubeDL(option).download([URL])
+    if ".mp3" in URL:
+        YoutubeDL(onlymp3_option).download([URL.replace(".mp3", "")])
+        print("Audio download completed")
+        continue
+    else:
+        YoutubeDL(option).download([URL])
 
     # 入出力パスを指定
     input_path = os.path.join(Path, "tmpvideo.webm")
